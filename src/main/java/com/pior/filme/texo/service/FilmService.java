@@ -3,8 +3,6 @@ package com.pior.filme.texo.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pior.filme.texo.api.reponse.FilmRangeResponse;
 import com.pior.filme.texo.api.reponse.FilmResponse;
-import com.pior.filme.texo.api.request.FilmRequest;
-import com.pior.filme.texo.config.ReadPersistConfig;
 import com.pior.filme.texo.dto.FilmDto;
 import com.pior.filme.texo.dto.FilmRangeDataDto;
 import com.pior.filme.texo.dto.FilmRangeDto;
@@ -29,10 +27,10 @@ import org.springframework.transaction.annotation.Transactional;
 @AllArgsConstructor
 public class FilmService {
 
-    private final FilmRepository filmRepository;
-    private final ObjectMapper objectMapper;
-    private static final String REGEX_SEPARATE_PRODUCER = ",|W*(\\sand\\s)W*";
-    private final Logger logger = LoggerFactory.getLogger(ReadPersistConfig.class);
+  private final FilmRepository filmRepository;
+  private final ObjectMapper objectMapper;
+  private static final String REGEX_SEPARATE_PRODUCER = ",|W*(\\sand\\s)W*";
+  private final Logger logger = LoggerFactory.getLogger(FilmService.class);
 
   public FilmResponse getFilm(String producer, Integer year) {
     logger.info("Iniciando busca do filme.");
@@ -49,28 +47,28 @@ public class FilmService {
     logger.info("Iniciando busca dos filmes.");
 
     //Pega todos os produtores vencedores
-      var producersWin = getProducersWinners();
-      var filmRangeDto = new FilmRangeDto();
-      var listFilm = new ArrayList<FilmRangeDataDto>();
+    var producersWin = getProducersWinners();
+    var filmRangeDto = new FilmRangeDto();
+    var listFilm = new ArrayList<FilmRangeDataDto>();
 
-      producersWin.stream()
-        .collect(Collectors.groupingBy(ProducersWinDto::getProducers,
-          Collectors.summarizingInt(ProducersWinDto::getYear))) //Agrupa todos os produtores contando quantos vencedores tem.
-        .entrySet().stream().filter(film -> film.getValue().getCount() > 1) //Filtra para retornar apenas os que tem mais de 1 premiação
-        .collect(Collectors.toList()).forEach(entry -> {
-                    var filmData = FilmRangeDataDto.builder()
-                .producers(entry.getKey())
-                .interval(Math.abs(entry.getValue().getMax() - entry.getValue().getMin()))
-                .previousWin(entry.getValue().getMin())
-                .followingWin(entry.getValue().getMax())
-                .build();
-        listFilm.add(filmData);
-        });
+    producersWin.stream()
+      .collect(Collectors.groupingBy(ProducersWinDto::getProducers,
+        Collectors.summarizingInt(ProducersWinDto::getYear))) //Agrupa todos os produtores contando quantos vencedores tem.
+      .entrySet().stream().filter(film -> film.getValue().getCount() > 1) //Filtra para retornar apenas os que tem mais de 1 premiação
+      .collect(Collectors.toList()).forEach(entry -> {
+                  var filmData = FilmRangeDataDto.builder()
+              .producers(entry.getKey())
+              .interval(Math.abs(entry.getValue().getMax() - entry.getValue().getMin()))
+              .previousWin(entry.getValue().getMin())
+              .followingWin(entry.getValue().getMax())
+              .build();
+      listFilm.add(filmData);
+    });
 
-      //Retorna só os com maior intervalo
-      filmRangeDto.setMax(getRangeMax(listFilm));
-      //Retorna só os com menor intervalo
-      filmRangeDto.setMin(getRangeMin(listFilm));
+    //Retorna só os com maior intervalo
+    filmRangeDto.setMax(getRangeMax(listFilm));
+    //Retorna só os com menor intervalo
+    filmRangeDto.setMin(getRangeMin(listFilm));
 
     logger.info("Busca finalizada com sucesso.");
     return objectMapper.convertValue(filmRangeDto, FilmRangeResponse.class);
@@ -133,7 +131,7 @@ public class FilmService {
       .collect(Collectors.toList());
   }
 
-  private List<ProducersWinDto> getProducersWinners() {
+  public List<ProducersWinDto> getProducersWinners() {
     var films = filmRepository.findAll();
     var producersWinDto = new ArrayList<ProducersWinDto>();
     films.forEach(film -> {

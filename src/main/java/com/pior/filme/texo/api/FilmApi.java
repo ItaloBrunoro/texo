@@ -43,7 +43,7 @@ public class FilmApi {
         return new ResponseEntity<>(filmService.getAllFilm(), HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Buscar todos os filmes.")
+    @ApiOperation(value = "Buscar filme.")
     @ApiResponses(value = {
       @ApiResponse(code = 200, message = "Filmes encontrados com sucesso."),
       @ApiResponse(code = 400, message = "Erro requisição inválida."),
