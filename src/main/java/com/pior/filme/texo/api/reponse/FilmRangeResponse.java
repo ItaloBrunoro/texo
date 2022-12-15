@@ -1,5 +1,6 @@
 package com.pior.filme.texo.api.reponse;
 
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,13 +10,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Data
-public class FilmResponse {
+public class FilmRangeResponse {
 
-  private Integer id;
-  private Integer years;
-  private String title;
-  private String studios;
-  private String producers;
-  private String winner;
-
+  private List<FilmRangeDataResponse> min;
+  private List<FilmRangeDataResponse> max;
 }

@@ -9,13 +9,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Data
-public class FilmResponse {
+public class FilmRangeDataResponse {
 
-  private Integer id;
-  private Integer years;
-  private String title;
-  private String studios;
   private String producers;
-  private String winner;
+  private Integer interval;
+  private Integer previousWin;
+  private Integer followingWin;
 
 }

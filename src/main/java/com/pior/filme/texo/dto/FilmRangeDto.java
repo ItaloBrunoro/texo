@@ -1,5 +1,6 @@
-package com.pior.filme.texo.api.reponse;
+package com.pior.filme.texo.dto;
 
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,11 +10,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Data
-public class FilmDataResponse {
+public class FilmRangeDto {
 
-  String producers;
-  Integer interval;
-  Integer previousWin;
-  Integer followingWin;
-
+  private List<FilmRangeDataDto> min;
+  private List<FilmRangeDataDto> max;
 }
